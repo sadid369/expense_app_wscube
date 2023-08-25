@@ -77,11 +77,12 @@ Widget wSpacer({double mWeight = 11}) {
 
 //Text Field Decoration
 
-InputDecoration myDecoration(
-    {IconData? mPrefixIcon,
-    required String mLabel,
-    required String mHint,
-    bool isPassword = false}) {
+InputDecoration myDecoration({
+  IconData? mPrefixIcon,
+  required String mLabel,
+  required String mHint,
+  bool isPassword = false,
+}) {
   return InputDecoration(
     label: Text(mLabel),
     hintText: mHint,

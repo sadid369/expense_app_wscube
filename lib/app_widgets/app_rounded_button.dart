@@ -23,9 +23,11 @@ class AppRoundedButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onTap,
         style: ElevatedButton.styleFrom(
-            backgroundColor: bgColor,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(21))),
+          backgroundColor: bgColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(21),
+          ),
+        ),
         child: Text(
           title,
           style: mTextStyles16(fontColor: textColor),
