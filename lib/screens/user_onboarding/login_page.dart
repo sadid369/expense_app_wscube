@@ -36,114 +36,73 @@ Widget mainUI(
   double mHeight,
 ) {
   return mHeight < 334
-      ? SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                backgroundColor: Colors.black,
-                radius: mWidth * 0.08,
-                child: Image.asset(
-                  ImagesConstants.appLogoIcon,
-                  color: Colors.grey.shade100,
-                  width: mWidth * 0.075,
-                  height: mWidth * 0.075,
-                ),
-              ),
-              hSpacer(mHeight: 16),
-              Text(
-                'Welcome, Back!!',
-                style: mTextStyles25(
-                  mWeight: FontWeight.bold,
-                ),
-              ),
-              hSpacer(),
-              TextField(
-                decoration: myDecoration(
-                  mLabel: 'Email',
-                  mHint: 'Enter Your Email',
-                  mPrefixIcon: Icons.email_outlined,
-                ),
-              ),
-              hSpacer(),
-              TextField(
-                obscureText: true,
-                obscuringCharacter: "*",
-                decoration: myDecoration(
-                  mLabel: 'Password',
-                  mHint: 'Enter Your Password',
-                  mPrefixIcon: Icons.password_outlined,
-                ),
-              ),
-              hSpacer(mHeight: 16),
-              AppRoundedButton(
-                onTap: () {},
-                title: 'Login',
-              )
-            ],
-          ),
-        )
-      : Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              backgroundColor: Colors.black,
-              radius: mWidth * 0.08,
-              child: Image.asset(
-                ImagesConstants.appLogoIcon,
-                color: Colors.grey.shade100,
-                width: mWidth * 0.075,
-                height: mWidth * 0.075,
-              ),
-            ),
-            hSpacer(mHeight: 16),
-            SizedBox(
-              width: mWidth * 0.3,
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(
-                  'Welcome, Back!!',
-                  style: mTextStyles25(
-                    mWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            hSpacer(),
-            TextField(
-              decoration: myDecoration(
-                mLabel: 'Email',
-                mHint: 'Enter Your Email',
-                mPrefixIcon: Icons.email_outlined,
-              ),
-            ),
-            hSpacer(),
-            TextField(
-              obscureText: true,
-              obscuringCharacter: "*",
-              decoration: myDecoration(
-                mLabel: 'Password',
-                mHint: 'Enter Your Password',
-                mPrefixIcon: Icons.password_outlined,
-              ),
-            ),
-            hSpacer(mHeight: 16),
-            AppRoundedButton(
-              onTap: () {},
-              title: 'Login',
-            )
-          ],
-        );
+      ? SingleChildScrollView(child: mainSubUI(mWidth, mHeight))
+      : mainSubUI(mWidth, mHeight);
 }
 
-Widget portraitUI(double mWeight, double mHeight) {
-  return mainUI(mWeight, mHeight);
+Widget portraitUI(double mWidth, double mHeight) {
+  return mainUI(mWidth, mHeight);
+}
+
+Widget mainSubUI(double mWidth, double mHeight) {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      CircleAvatar(
+        backgroundColor: Colors.black,
+        radius: mWidth * 0.08,
+        child: Image.asset(
+          ImagesConstants.appLogoIcon,
+          color: Colors.grey.shade100,
+          width: mWidth * 0.075,
+          height: mWidth * 0.075,
+        ),
+      ),
+      hSpacer(mHeight: 16),
+      SizedBox(
+        width: mWidth * 0.3,
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            'Welcome, Back!!',
+            style: mTextStyles25(
+              mWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+      hSpacer(),
+      TextField(
+        decoration: myDecoration(
+          mLabel: 'Email',
+          mHint: 'Enter Your Email',
+          mPrefixIcon: Icons.email_outlined,
+        ),
+      ),
+      hSpacer(),
+      TextField(
+        obscureText: true,
+        obscuringCharacter: "*",
+        decoration: myDecoration(
+          mLabel: 'Password',
+          mHint: 'Enter Your Password',
+          mPrefixIcon: Icons.password_outlined,
+        ),
+      ),
+      hSpacer(mHeight: 16),
+      AppRoundedButton(
+        onTap: () {},
+        title: 'Login',
+      )
+    ],
+  );
 }
 
 Widget landScapeUI(double mWidth, double mHeight) {
   return Row(
     children: [
       Expanded(
+        flex: 1,
         child: CircleAvatar(
           backgroundColor: Colors.black,
           radius: mHeight * 0.08,
@@ -156,6 +115,7 @@ Widget landScapeUI(double mWidth, double mHeight) {
         ),
       ),
       Expanded(
+        flex: 2,
         child: LayoutBuilder(builder: (context, constrain) {
           var mWidth = constrain.maxWidth;
           print(mWidth);
