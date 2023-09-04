@@ -1,5 +1,5 @@
-import 'package:expense_app/screens/utils/images_constants.dart';
-import 'package:expense_app/screens/utils/my_styles.dart';
+import 'package:expense_app/utils/images_constants.dart';
+import 'package:expense_app/utils/my_styles.dart';
 import 'package:flutter/material.dart';
 
 class SplashPage extends StatefulWidget {

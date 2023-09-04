@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:expense_app/color_constants.dart';
-import 'package:expense_app/screens/utils/my_styles.dart';
+import 'package:expense_app/utils/my_styles.dart';
 import 'package:flutter/material.dart';
 
 class AppRoundedButton extends StatelessWidget {
