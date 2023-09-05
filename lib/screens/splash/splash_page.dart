@@ -1,4 +1,4 @@
-import 'package:expense_app/utils/images_constants.dart';
+import 'package:expense_app/constants/images_constants.dart';
 import 'package:expense_app/utils/my_styles.dart';
 import 'package:flutter/material.dart';
 

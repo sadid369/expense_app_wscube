@@ -1,4 +1,4 @@
-import 'package:expense_app/color_constants.dart';
+import 'package:expense_app/constants/color_constants.dart';
 import 'package:flutter/material.dart';
 
 // styles

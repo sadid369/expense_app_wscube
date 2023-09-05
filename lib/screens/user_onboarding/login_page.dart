@@ -1,6 +1,6 @@
 import 'package:expense_app/app_widgets/app_rounded_button.dart';
-import 'package:expense_app/color_constants.dart';
-import 'package:expense_app/utils/images_constants.dart';
+import 'package:expense_app/constants/color_constants.dart';
+import 'package:expense_app/constants/images_constants.dart';
 import 'package:expense_app/utils/my_styles.dart';
 import 'package:flutter/material.dart';
 
