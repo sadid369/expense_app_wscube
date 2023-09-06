@@ -8,8 +8,10 @@ class AppRoundedButton extends StatelessWidget {
   final Color bgColor;
   final String title;
   final Color textColor;
+  final Widget? mWidget;
   const AppRoundedButton({
     Key? key,
+    this.mWidget,
     required this.onTap,
     this.bgColor = ColorConstants.mattBlackColor,
     required this.title,
@@ -28,10 +30,11 @@ class AppRoundedButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(21),
           ),
         ),
-        child: Text(
-          title,
-          style: mTextStyles16(fontColor: textColor),
-        ),
+        child: mWidget ??
+            Text(
+              title,
+              style: mTextStyles16(fontColor: textColor),
+            ),
       ),
     );
   }
