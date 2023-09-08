@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:expense_app/models/expense_model.dart';
+import 'package:expense_app/models/user_model.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -60,12 +61,12 @@ class AppDataBase {
   }
 
   //createAccount
-  Future<bool> createNewAccount(String email) async {
-    bool check = await checkIfEmailAlreadyExists(email);
+  Future<bool> createNewAccount(UserModel newUser) async {
+    bool check = await checkIfEmailAlreadyExists(newUser.email);
     var db = await getDB();
     if (!check) {
       //insert
-      var isInserted = await db.insert(USER_TABLE, {});
+      var isInserted = await db.insert(USER_TABLE, newUser.toMap());
       return isInserted > 0;
     } else {
       return false;

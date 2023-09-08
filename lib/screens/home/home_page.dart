@@ -1,4 +1,5 @@
 import 'package:expense_app/bloc/expense_bloc.dart';
+import 'package:expense_app/constants/app_constants.dart';
 import 'package:expense_app/screens/add_trans/add_transaction_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,10 +33,17 @@ class _HomePageState extends State<HomePage> {
               itemCount: state.listExpenses.length,
               itemBuilder: (context, index) {
                 var currentItem = state.listExpenses[index];
+                var imagePath = "";
+                imagePath = AppConstants.categories.firstWhere(
+                  (element) {
+                    return element['id'] == currentItem.expe_cat_id;
+                  },
+                )['img'];
                 return ListTile(
                   title: Text(currentItem.exp_title),
                   subtitle: Text(currentItem.exp_desc),
                   trailing: Text("\$ ${currentItem.exp_amt.toString()}"),
+                  leading: Image.asset(imagePath),
                 );
               },
             );
