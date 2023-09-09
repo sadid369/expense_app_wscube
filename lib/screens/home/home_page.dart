@@ -1,5 +1,7 @@
 import 'package:expense_app/bloc/expense_bloc.dart';
 import 'package:expense_app/constants/app_constants.dart';
+import 'package:expense_app/models/expense_model.dart';
+import 'package:expense_app/models/filtered_expense_model.dart';
 import 'package:expense_app/screens/add_trans/add_transaction_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,6 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<FilteredExpenseModel> arrDateWiseExpenses = [];
   @override
   void initState() {
     super.initState();
@@ -29,8 +32,9 @@ class _HomePageState extends State<HomePage> {
               child: CircularProgressIndicator(),
             );
           } else if (state is ExpenseLoaded) {
+            filterExpensesByDate(state.listExpenses);
             return ListView.builder(
-              itemCount: state.listExpenses.length,
+              itemCount: arrDateWiseExpenses.length,
               itemBuilder: (context, index) {
                 var currentItem = state.listExpenses[index];
                 var imagePath = "";
@@ -52,13 +56,57 @@ class _HomePageState extends State<HomePage> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) {
-            return const AddTransactionPage();
-          },
-        ));
-      }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) {
+              return const AddTransactionPage();
+            },
+          ));
+        },
+        child: Icon(Icons.add),
+      ),
     );
+  }
+
+  void filterExpensesByDate(List<ExpenseModel> arrExpenses) {
+    arrDateWiseExpenses.clear();
+    List<String> arrUniqueDates = [];
+
+    //step 1
+    for (ExpenseModel eachExp in arrExpenses) {
+      var eachDate = DateTime.parse(eachExp.exp_time);
+      var mDate =
+          "${eachDate.year}-${eachDate.month.toString().length < 2 ? "0${eachDate.month}" : "${eachDate.month}"}-${eachDate.day.toString().length < 2 ? "0${eachDate.day}" : "${eachDate.day}"}";
+      if (!arrUniqueDates.contains(mDate)) {
+        arrUniqueDates.add(mDate);
+      }
+    }
+    print(arrUniqueDates);
+
+    /// step 2
+    for (String eachUniqueDate in arrUniqueDates) {
+      List<ExpenseModel> eachDateExpenses = [];
+      num eachDateAmt = 0;
+      for (ExpenseModel eachExp in arrExpenses) {
+        if (eachExp.exp_time.contains(eachUniqueDate)) {
+          eachDateExpenses.add(eachExp);
+          if (eachExp.exp_type == 0) {
+            eachDateAmt -= eachExp.exp_amt;
+          } else {
+            eachDateAmt += eachExp.exp_amt;
+          }
+        }
+      }
+      print(eachDateAmt);
+      arrDateWiseExpenses.add(FilteredExpenseModel(
+          dateName: eachUniqueDate,
+          totalAmt: eachDateAmt,
+          arrExpenses: eachDateExpenses));
+    }
+
+    //step 3
+
+    print(arrDateWiseExpenses.length);
   }
 }
