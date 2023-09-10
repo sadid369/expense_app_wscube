@@ -6,6 +6,7 @@ import 'package:expense_app/screens/add_trans/add_transaction_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -16,6 +17,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<FilteredExpenseModel> arrDateWiseExpenses = [];
+  num maxAmount = 0;
   @override
   void initState() {
     super.initState();
@@ -33,43 +35,19 @@ class _HomePageState extends State<HomePage> {
             );
           } else if (state is ExpenseLoaded) {
             filterExpensesByDate(state.listExpenses);
-            return ListView.builder(
-              itemCount: arrDateWiseExpenses.length,
-              itemBuilder: (context, index) {
-                var currentItem = arrDateWiseExpenses[index];
-
-                return Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('${currentItem.dateName}'),
-                        Text('${currentItem.totalAmt}')
-                      ],
-                    ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: currentItem.arrExpenses.length,
-                      itemBuilder: (context, childIndex) {
-                        var currentExp = currentItem.arrExpenses[childIndex];
-                        var imagePath = "";
-                        imagePath = AppConstants.categories.firstWhere(
-                          (element) {
-                            return element['id'] == currentExp.expe_cat_id;
-                          },
-                        )['img'];
-                        return ListTile(
-                          title: Text(currentExp.exp_title),
-                          subtitle: Text(currentExp.exp_desc),
-                          trailing: Text("\$ ${currentExp.exp_amt.toString()}"),
-                          leading: Image.asset(imagePath),
-                        );
-                      },
-                    )
-                  ],
-                );
-              },
+            return SfCartesianChart(
+              primaryXAxis: CategoryAxis(),
+              primaryYAxis: NumericAxis(
+                  minimum: 0, maximum: maxAmount.toDouble(), interval: 1000),
+              series: <ChartSeries<FilteredExpenseModel, String>>[
+                ColumnSeries<FilteredExpenseModel, String>(
+                  dataSource: arrDateWiseExpenses,
+                  xValueMapper: (FilteredExpenseModel data, index) =>
+                      data.dateName,
+                  yValueMapper: (FilteredExpenseModel data, index) =>
+                      data.totalAmt.toDouble(),
+                )
+              ],
             );
           } else {
             return Container();
@@ -119,6 +97,10 @@ class _HomePageState extends State<HomePage> {
         }
       }
       print(eachDateAmt);
+
+      if (eachDateAmt > maxAmount) {
+        maxAmount = eachDateAmt;
+      }
       arrDateWiseExpenses.add(FilteredExpenseModel(
           dateName: eachUniqueDate,
           totalAmt: eachDateAmt,
@@ -136,3 +118,44 @@ class _HomePageState extends State<HomePage> {
 //                     return element['id'] == currentItem.expe_cat_id;
 //                   },
 //                 )['img'];
+
+
+
+// ListView.builder(
+//               itemCount: arrDateWiseExpenses.length,
+//               itemBuilder: (context, index) {
+//                 var currentItem = arrDateWiseExpenses[index];
+
+//                 return Column(
+//                   children: [
+//                     Row(
+//                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                       children: [
+//                         Text('${currentItem.dateName}'),
+//                         Text('${currentItem.totalAmt}')
+//                       ],
+//                     ),
+//                     ListView.builder(
+//                       shrinkWrap: true,
+//                       physics: NeverScrollableScrollPhysics(),
+//                       itemCount: currentItem.arrExpenses.length,
+//                       itemBuilder: (context, childIndex) {
+//                         var currentExp = currentItem.arrExpenses[childIndex];
+//                         var imagePath = "";
+//                         imagePath = AppConstants.categories.firstWhere(
+//                           (element) {
+//                             return element['id'] == currentExp.expe_cat_id;
+//                           },
+//                         )['img'];
+//                         return ListTile(
+//                           title: Text(currentExp.exp_title),
+//                           subtitle: Text(currentExp.exp_desc),
+//                           trailing: Text("\$ ${currentExp.exp_amt.toString()}"),
+//                           leading: Image.asset(imagePath),
+//                         );
+//                       },
+//                     )
+//                   ],
+//                 );
+//               },
+//             );
