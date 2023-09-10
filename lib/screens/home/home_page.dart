@@ -36,18 +36,38 @@ class _HomePageState extends State<HomePage> {
             return ListView.builder(
               itemCount: arrDateWiseExpenses.length,
               itemBuilder: (context, index) {
-                var currentItem = state.listExpenses[index];
-                var imagePath = "";
-                imagePath = AppConstants.categories.firstWhere(
-                  (element) {
-                    return element['id'] == currentItem.expe_cat_id;
-                  },
-                )['img'];
-                return ListTile(
-                  title: Text(currentItem.exp_title),
-                  subtitle: Text(currentItem.exp_desc),
-                  trailing: Text("\$ ${currentItem.exp_amt.toString()}"),
-                  leading: Image.asset(imagePath),
+                var currentItem = arrDateWiseExpenses[index];
+
+                return Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('${currentItem.dateName}'),
+                        Text('${currentItem.totalAmt}')
+                      ],
+                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: currentItem.arrExpenses.length,
+                      itemBuilder: (context, childIndex) {
+                        var currentExp = currentItem.arrExpenses[childIndex];
+                        var imagePath = "";
+                        imagePath = AppConstants.categories.firstWhere(
+                          (element) {
+                            return element['id'] == currentExp.expe_cat_id;
+                          },
+                        )['img'];
+                        return ListTile(
+                          title: Text(currentExp.exp_title),
+                          subtitle: Text(currentExp.exp_desc),
+                          trailing: Text("\$ ${currentExp.exp_amt.toString()}"),
+                          leading: Image.asset(imagePath),
+                        );
+                      },
+                    )
+                  ],
                 );
               },
             );
@@ -110,3 +130,9 @@ class _HomePageState extends State<HomePage> {
     print(arrDateWiseExpenses.length);
   }
 }
+// var imagePath = "";
+//                 imagePath = AppConstants.categories.firstWhere(
+//                   (element) {
+//                     return element['id'] == currentItem.expe_cat_id;
+//                   },
+//                 )['img'];
