@@ -88,7 +88,7 @@ class AppDataBase {
   Future<bool> authenticateUser(String email, String pass) async {
     var db = await getDB();
 
-    var data = await db.query(USER_TABLE,
+    List<Map<String, dynamic>> data = await db.query(USER_TABLE,
         where: "$USER_COLUMN_EMAIL = ? and $USER_COLUMN_PASS = ?",
         whereArgs: [email, pass]);
 
@@ -96,7 +96,7 @@ class AppDataBase {
     // set uid
     if (data.isNotEmpty) {
       var pref = await SharedPreferences.getInstance();
-      pref.setInt('uid', int.parse(data[0][USER_COLUMN_ID].toString()));
+      pref.setInt('uid', data[0][USER_COLUMN_ID]);
     }
 
     return data.isNotEmpty;

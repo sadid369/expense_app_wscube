@@ -6,13 +6,12 @@ import 'package:expense_app/screens/add_trans/add_transaction_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -35,19 +34,44 @@ class _HomePageState extends State<HomePage> {
             );
           } else if (state is ExpenseLoaded) {
             filterExpensesByDate(state.listExpenses);
-            return SfCartesianChart(
-              primaryXAxis: CategoryAxis(),
-              primaryYAxis: NumericAxis(
-                  minimum: 0, maximum: maxAmount.toDouble(), interval: 1000),
-              series: <ChartSeries<FilteredExpenseModel, String>>[
-                ColumnSeries<FilteredExpenseModel, String>(
-                  dataSource: arrDateWiseExpenses,
-                  xValueMapper: (FilteredExpenseModel data, index) =>
-                      data.dateName,
-                  yValueMapper: (FilteredExpenseModel data, index) =>
-                      data.totalAmt.toDouble(),
-                )
-              ],
+
+            return ListView.builder(
+              itemCount: arrDateWiseExpenses.length,
+              itemBuilder: (context, index) {
+                var currentItem = arrDateWiseExpenses[index];
+
+                return Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('${currentItem.dateName}'),
+                        Text('${currentItem.totalAmt}')
+                      ],
+                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: currentItem.arrExpenses.length,
+                      itemBuilder: (context, childIndex) {
+                        var currentExp = currentItem.arrExpenses[childIndex];
+                        var imagePath = "";
+                        imagePath = AppConstants.categories.firstWhere(
+                          (element) {
+                            return element['id'] == currentExp.expe_cat_id;
+                          },
+                        )['img'];
+                        return ListTile(
+                          title: Text(currentExp.exp_title),
+                          subtitle: Text(currentExp.exp_desc),
+                          trailing: Text("\$ ${currentExp.exp_amt.toString()}"),
+                          leading: Image.asset(imagePath),
+                        );
+                      },
+                    )
+                  ],
+                );
+              },
             );
           } else {
             return Container();
@@ -158,4 +182,25 @@ class _HomePageState extends State<HomePage> {
 //                   ],
 //                 );
 //               },
+//             );
+
+
+
+// Container(
+//               width: double.infinity,
+//               height: double.infinity,
+//               child: SfCartesianChart(
+//                 primaryXAxis: CategoryAxis(),
+//                 primaryYAxis: NumericAxis(
+//                     minimum: 0, maximum: maxAmount.toDouble(), interval: 1000),
+//                 series: <ChartSeries<FilteredExpenseModel, String>>[
+//                   ColumnSeries<FilteredExpenseModel, String>(
+//                     dataSource: arrDateWiseExpenses,
+//                     xValueMapper: (FilteredExpenseModel data, index) =>
+//                         data.dateName,
+//                     yValueMapper: (FilteredExpenseModel data, index) =>
+//                         data.totalAmt.toDouble(),
+//                   )
+//                 ],
+//               ),
 //             );
