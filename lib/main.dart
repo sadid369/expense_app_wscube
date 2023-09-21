@@ -3,6 +3,7 @@ import 'package:expense_app/database_provider/app_database.dart';
 import 'package:expense_app/screens/add_trans/add_transaction_page.dart';
 import 'package:expense_app/screens/home/home_page.dart';
 import 'package:expense_app/screens/splash/splash_page.dart';
+import 'package:expense_app/screens/user_onboarding/bloc/user_bloc.dart';
 import 'package:expense_app/screens/user_onboarding/login_page.dart';
 import 'package:expense_app/utils/graph_page.dart';
 import 'package:flutter/material.dart';
@@ -11,10 +12,19 @@ import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    BlocProvider(
-      create: (context) {
-        return ExpenseBloc(db: AppDataBase.db);
-      },
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) {
+            return ExpenseBloc(db: AppDataBase.db);
+          },
+        ),
+        BlocProvider(
+          create: (context) {
+            return UserBloc(db: AppDataBase.db);
+          },
+        ),
+      ],
       child: const MyApp(),
     ),
   );

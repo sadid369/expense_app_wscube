@@ -25,7 +25,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       if (check) {
         emit(UserSuccessState());
       } else {
-        emit(UserErrorState(failMsg: 'Invalid User name & Password!!!!'));
+        emit(UserErrorState(failMsg: 'Invalid User Name & Password!!!!'));
       }
     });
   }

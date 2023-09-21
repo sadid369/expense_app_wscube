@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:expense_app/models/expense_model.dart';
 import 'package:expense_app/models/user_model.dart';
+import 'package:expense_app/user_prefs/user_preferences.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -95,8 +96,10 @@ class AppDataBase {
     //shared pref
     // set uid
     if (data.isNotEmpty) {
-      var pref = await SharedPreferences.getInstance();
-      pref.setInt('uid', data[0][USER_COLUMN_ID]);
+      // var pref = await SharedPreferences.getInstance();
+      // pref.setInt('uid', data[0][USER_COLUMN_ID]);
+
+      UserPreferences().setUID(data[0][USER_COLUMN_ID]);
     }
 
     return data.isNotEmpty;
@@ -116,8 +119,9 @@ class AppDataBase {
     var db = await getDB();
 
     // var pref = await SharedPreferences.getInstance();
-    // int? uid = pref.getInt('udi');
-    var uid = 1;
+    // int? uid = pref.getInt('uid');
+
+    int uid = await UserPreferences().getUID();
 
     List<Map<String, dynamic>> data = await db.query(EXPENSE_TABLE,
         where: "$USER_COLUMN_ID = ?", whereArgs: ["$uid"]);
